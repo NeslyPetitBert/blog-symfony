@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} | Nouvel article{% endblock %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <h1>
+    {% if editMode %}
+        Modification de l'article : <strong>{{ article.title }}</strong>
+        {% else %}
+            Créer un nouvel article
+    {% endif %}
+    </h1>
+    <hr>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">
+            {% if editMode %}
+                Enregistrer les modifications
+                {% else %}
+                    Créer l'article
+            {% endif %}
+        </button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('article_index') }}">back to list</a>
+{% endblock %}

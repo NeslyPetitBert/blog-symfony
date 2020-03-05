@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+
+    <section class="articles">
+        {% for article in articles %}
+            <article>
+                <h2>{{ article.title }}</h2>
+                <div class="metadata">Ecrit le {{ article.createdAt ? article.createdAt|date('d/m/Y') : '' }} à {{ article.createdAt ? article.createdAt|date('H:i') : '' }} dans la catégorie Politique</div>
+                <div class="content">
+                    <img src="{{ article.picture }}" alt="{{ article.title }}">
+                    {{ article.content | raw }}
+                    <a href="{{ path('article_show', {'id': article.id }) }}" class="btn btn-primary">Lire la suite</a>
+                    <a href="{{ path('article_edit', {'id': article.id }) }}" class="btn btn-primary">Modifier</a>
+                </div>
+            </article>
+                    {% else %}
+            <p>Aucun article pour le moment</p>
+        {% endfor %}
+    </section>
+    <a href="{{ path('article_new') }}">Create new</a>
+    
+{% endblock %}
