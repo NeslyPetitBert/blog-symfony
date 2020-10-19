@@ -21,6 +21,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('article_new') }}">Créer un article</a>
                     </li>
+
+                    {% if not app.user %}
+                    <li class="nav-item">
+                        <a href="{{ path('security_login') }}" class="nav-link">
+                            Connexion
+                        </a>
+                    </li>
+                    
+                    {% else %}
+
+                    <li class="nav-item">
+                        <a href="{{ path('security_logout') }}" class="nav-link">
+                            Déonnexion
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

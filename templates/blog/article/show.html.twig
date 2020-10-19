@@ -5,16 +5,44 @@
 {% block body %}
     <article>
         <h2>{{ article.title }}</h2>
-        <div class="metadata">Ecrit le {{ article.createdAt ? article.createdAt|date('d/m/Y') : '' }} à {{ article.createdAt ? article.createdAt|date('H:i') : '' }} dans la catégorie Politique</div>
+        <div class="metadata">Ecrit le {{ article.createdAt ? article.createdAt|date('d/m/Y') : '' }} à {{ article.createdAt ? article.createdAt|date('H:i') : '' }} dans la catégorie {{ article.category.title }}</div>
         <div class="content">
             <img src="{{ article.picture }}" alt="{{ article.title }}">
             {{ article.content | raw }}
         </div>
     </article>
 
-    <a href="{{ path('article_index') }}">back to list</a>
+    <section id="commentaires">
+        <h1>{{article.comments | length }} commentaires : </h1>
 
-    <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
+        {% for comment in article.comments %}
+            <div class="comment">
+                <div class="row">
+                    <div class="col-3">
+                        {{ comment.author }} (<small>{{ comment.createdAt ? comment.createdAt|date('d/m/Y à H:i') : '' }}</small>)
+                    </div>
+                    <div class="col">
+                        {{ comment.content | raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 
-    {{ include('blog/article/_delete_form.html.twig') }}
+        {% if app.user %}
+            {{ form_start(commentForm) }}
+                {{ form_widget(commentForm) }}
+                <button class="btn btn-primary">{{ button_label|default('Créer') }}</button>
+            {{ form_end(commentForm) }}
+            {% else %}
+            <hr><br>
+                <h3>Vous devez être connecté pour soumettre un commentaire.</h3><a href="{{ path('security_login') }}" btn btn-primary>Connexion !</a>
+                <hr>
+        {% endif %}
+    </section>
+
+    <a href="{{ path('article_index') }}">Liste des articles</a>
+
+    {# <a href="{{ path('article_edit', {'id': article.id}) }}">Modifier</a>
+
+    {{ include('blog/article/_delete_form.html.twig') }} #}
 {% endblock %}
